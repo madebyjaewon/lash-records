@@ -179,10 +179,154 @@ input:focus,select:focus,textarea:focus{
 }
 </style>
 
+
+<style>
+/* V0.6 — precision alignment and interaction pass */
+
+/* All operational UI numbers: lining/tabular numerals.
+   Customer record/detail content is intentionally excluded. */
+body:not(.customer-record-mode) .metric .value,
+#serviceModal,
+#serviceModal input,
+#serviceModal select,
+#serviceModal button,
+#serviceModal .tiny,
+#serviceModal .fieldhint,
+nav,
+.topbar,
+.tabs,
+#home,
+#appointments {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+/* Customer form: labels and controls share one geometry */
+#customerModal .grid2{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:14px !important;
+  align-items:start !important;
+}
+#customerModal .grid2 > div{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+#customerModal .grid2 label{
+  display:flex;
+  align-items:flex-end;
+  min-height:20px;
+  margin:0 0 7px !important;
+  line-height:1.2;
+}
+#customerModal input[type="date"],
+#customerModal select{
+  height:46px !important;
+  min-height:46px !important;
+  line-height:22px !important;
+  margin:0 !important;
+}
+
+/* Service form geometry */
+#serviceModal label{
+  margin-bottom:7px;
+}
+#serviceModal #svcDate{
+  width:100%;
+  height:46px !important;
+  min-height:46px !important;
+  margin:0;
+}
+#serviceModal .checkgrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:2px;
+}
+#serviceModal .checkitem{
+  min-height:0 !important;
+  height:38px;
+  width:auto;
+  flex:0 0 auto;
+  padding:0 15px !important;
+  border-radius:999px !important;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+}
+#serviceModal .checkitem input{
+  position:absolute !important;
+  opacity:0 !important;
+  pointer-events:none;
+  width:1px !important;
+  height:1px !important;
+}
+#serviceModal .checkitem:has(input:checked){
+  background:var(--ink) !important;
+  color:#fff !important;
+  border-color:var(--ink) !important;
+}
+
+/* Price/design rows: equal control size and spacing */
+#serviceModal .formgrid.three{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px !important;
+  align-items:start;
+}
+#serviceModal .formgrid.three > div{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+#serviceModal .formgrid.three label{
+  min-height:20px;
+  display:flex;
+  align-items:flex-end;
+  margin:0 0 7px !important;
+}
+#serviceModal .formgrid.three input,
+#serviceModal .formgrid.three select{
+  width:100% !important;
+  height:46px !important;
+  min-height:46px !important;
+  margin:0 !important;
+}
+#serviceModal .fieldhint{
+  min-height:16px;
+  margin-top:5px;
+}
+
+/* Eye diagram gets more fan/spread while inputs stay below the artwork */
+#serviceModal .eye-visual{
+  height:124px;
+  padding:8px 4px 0;
+}
+#serviceModal .eye-visual svg{
+  overflow:visible;
+}
+#serviceModal .design-grid{
+  margin-top:8px;
+}
+
+@media(max-width:600px){
+  #customerModal .grid2,
+  #serviceModal .formgrid.three{
+    grid-template-columns:1fr;
+  }
+  #serviceModal .checkgrid{
+    gap:7px;
+  }
+  #serviceModal .checkitem{
+    height:36px;
+    padding:0 13px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
-<header><div><div class="brand">LASH RECORDS</div><div class="sub">Studio client management · V0.5</div></div><div class="avatar">JC</div></header>
+<header><div><div class="brand">LASH RECORDS</div><div class="sub">Studio client management · V0.6</div></div><div class="avatar">JC</div></header>
 <main>
 <section id="home" class="page active">
 <h1>Good afternoon.</h1>
@@ -265,10 +409,10 @@ input:focus,select:focus,textarea:focus{
 <button class="close" onclick="closeModal('serviceModal')">×</button><h2 style="font-size:18px">新增服務紀錄</h2>
 <label>客戶</label><select id="svcCustomer"></select>
 <label>日期</label><input id="svcDate" type="date"><label>服務項目（可複選）</label><div class="checkgrid"><label class="checkitem"><input type="checkbox" name="svcItems" value="嫁接">嫁接</label><label class="checkitem"><input type="checkbox" name="svcItems" value="純卸除">純卸除</label><label class="checkitem"><input type="checkbox" name="svcItems" value="本店卸除">本店卸除</label><label class="checkitem"><input type="checkbox" name="svcItems" value="他店卸除">他店卸除</label></div>
-<div class="formgrid three"><div><label>原價</label><input id="price" type="number" value="2000" oninput="calcPaid()"></div><div><label>折扣</label><input id="discount" value="10" placeholder="9 = 9折" oninput="calcPaid()"><div class="fieldhint">9 = 9折｜85 = 85折</div></div><div><label>票券</label><input id="voucher" type="number" value="0" oninput="calcPaid()"><div class="fieldhint">折扣後再扣除</div></div></div><label>實收金額</label><input id="paid" type="number" value="2000">
+<div class="formgrid three"><div><label>原價</label><input id="price" type="number" placeholder="點擊輸入" oninput="calcPaid()"></div><div><label>折扣</label><input id="discount" inputmode="decimal" placeholder="點擊輸入" oninput="calcPaid()"><div class="fieldhint">9 = 9折｜85 = 85折</div></div><div><label>票券</label><input id="voucher" type="number" placeholder="點擊輸入" oninput="calcPaid()"><div class="fieldhint">折扣後再扣除</div></div></div><label>實收金額</label><input id="paid" type="number" value="0">
 <div class="between row" style="margin-top:18px"><h2 style="margin:0">睫毛設計</h2><button class="btn ghost small" onclick="copyLast()">複製上次設計</button></div>
 <div class="formgrid three"><div><label>款式</label><select id="style"><option>圓眼</option><option>長眼</option></select></div><div><label>根數</label><input id="count" type="number" value="120"></div><div><label>型號</label><input id="material" placeholder="例如 YY-01"></div></div>
-<label>五點定位｜長度 × 翹度</label><div class="eye-layout"><div class="eye-card"><div class="eye-title">LEFT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L54 28 M105 42 L101 8 M150 36 L150 0 M195 42 L199 8 M238 58 L246 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="leftPts"></div></div><div class="eye-card"><div class="eye-title">RIGHT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L54 28 M105 42 L101 8 M150 36 L150 0 M195 42 L199 8 M238 58 L246 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="rightPts"></div></div></div><h2>操作時間</h2><div class="card" id="timers"></div>
+<label>五點定位｜長度 × 翹度</label><div class="eye-layout"><div class="eye-card"><div class="eye-title">LEFT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L40 28 M105 42 L92 6 M150 36 L150 0 M195 42 L208 6 M238 58 L260 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="leftPts"></div></div><div class="eye-card"><div class="eye-title">RIGHT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L40 28 M105 42 L92 6 M150 36 L150 0 M195 42 L208 6 M238 58 L260 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="rightPts"></div></div></div><h2>操作時間</h2><div class="card" id="timers"></div>
 <label>備註</label><textarea id="svcNote" placeholder="本次狀況、下次調整…"></textarea>
 <button class="btn" style="width:100%;margin-top:14px" onclick="saveService()">儲存本次服務</button>
 </div></div>
@@ -333,7 +477,9 @@ function saveCustomer(){
 }
 
 function pointInputs(side,values){let names=["眼頭","前中","中央","後中","眼尾"],curls=["J","B","C","CC","D","L","L+"];return names.map((n,i)=>{let v=values?.[i],len=typeof v==="object"?v.len:(v||[8,9,10,11,10][i]),curl=typeof v==="object"?v.curl:"C";return `<div class="design-point"><div class="ptname">${n}</div><input id="${side}len${i}" type="number" value="${len}"><div class="unit">mm</div><select id="${side}curl${i}">${curls.map(x=>`<option ${x===curl?"selected":""}>${x}</option>`).join("")}</select></div>`}).join("")}
-function openService(id){if(id)activeCustomer=id;document.getElementById("svcCustomer").innerHTML=customers.map(c=>`<option value="${c.id}" ${c.id===activeCustomer?"selected":""}>${c.name}</option>`).join("");document.getElementById("svcDate").value=new Date().toISOString().slice(0,10);document.querySelectorAll('input[name="svcItems"]').forEach(x=>x.checked=false);document.getElementById("leftPts").innerHTML=pointInputs("l");document.getElementById("rightPts").innerHTML=pointInputs("r");timerState={};renderTimers();calcPaid();document.getElementById("serviceModal").classList.add("on")}
+function openService(id){if(id)activeCustomer=id;document.getElementById("svcCustomer").innerHTML=customers.map(c=>`<option value="${c.id}" ${c.id===activeCustomer?"selected":""}>${c.name}</option>`).join("");document.getElementById("svcDate").value=new Date().toISOString().slice(0,10);document.querySelectorAll('input[name="svcItems"]').forEach(x=>x.checked=false);document.getElementById("leftPts").innerHTML=pointInputs("l");document.getElementById("rightPts").innerHTML=pointInputs("r");
+document.getElementById("price").value="";document.getElementById("discount").value="";document.getElementById("voucher").value="";document.getElementById("paid").value="0";
+timerState={};renderTimers();calcPaid();document.getElementById("serviceModal").classList.add("on")}
 function closeModal(id){document.getElementById(id).classList.remove("on")}
 function discountMultiplier(raw){let n=parseFloat(raw);if(!isFinite(n)||n<=0)return 1;if(n<=10)return n/10;if(n<=100)return n/100;return 1}
 function calcPaid(){let p=+document.getElementById("price").value||0,d=discountMultiplier(document.getElementById("discount").value),v=+document.getElementById("voucher").value||0;document.getElementById("paid").value=Math.max(0,Math.round(p*d-v))}
