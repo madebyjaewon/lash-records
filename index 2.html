@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f3f0ea"/>
+<title>LASH RECORDS — Demo</title>
+<style>
+:root{--bg:#f3f0ea;--card:#fbfaf7;--ink:#252421;--muted:#858078;--line:#ddd8cf;--accent:#45413b;--soft:#ebe7df}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit} button{cursor:pointer}
+.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:88px}
+header{padding:28px 20px 12px;display:flex;justify-content:space-between;align-items:center}
+.brand{font:600 14px/1.2 Georgia,serif;letter-spacing:.16em}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--ink);color:white;display:grid;place-items:center;font-size:12px}
+main{padding:8px 16px}.page{display:none}.page.active{display:block}
+h1{font-family:Georgia,"Noto Serif TC",serif;font-weight:500;font-size:31px;margin:12px 4px 18px} h2{font-size:14px;letter-spacing:.08em;margin:26px 4px 10px;text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:10px 0;box-shadow:0 6px 24px rgba(40,35,25,.035)}
+.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric .value{font-family:Georgia,serif;font-size:30px;margin-top:8px}.label{font-size:12px;color:var(--muted);letter-spacing:.04em}.tiny{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:6px;background:var(--soft);padding:4px;border-radius:12px}.tabs button{flex:1;border:0;background:transparent;padding:8px;border-radius:9px;font-size:12px}.tabs button.on{background:var(--card);box-shadow:0 1px 5px #00000010}
+.appt{padding:12px 0;border-bottom:1px solid var(--line)}.appt:last-child{border:0}.time{width:54px;font-family:Georgia,serif}.pill{font-size:11px;background:var(--soft);padding:4px 8px;border-radius:99px}
+.search{width:100%;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:13px 14px;outline:none}
+.customer{display:flex;justify-content:space-between;align-items:center}.customer strong{display:block;margin-bottom:4px}
+.btn{border:0;background:var(--ink);color:white;border-radius:13px;padding:12px 15px}.btn.ghost{background:var(--soft);color:var(--ink)}.btn.small{padding:8px 10px;font-size:12px}
+nav{position:fixed;z-index:5;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);background:rgba(251,250,247,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+nav button{border:0;background:none;padding:8px 2px;color:var(--muted);font-size:11px}nav button.on{color:var(--ink);font-weight:600}.navicon{font-size:19px;display:block;margin-bottom:3px}
+label{display:block;font-size:12px;color:var(--muted);margin:12px 2px 6px}input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px}textarea{min-height:76px;resize:vertical}
+.eye{position:relative;height:120px;margin:8px 0 18px}.arc{position:absolute;left:5%;right:5%;top:40px;height:55px;border-top:2px solid var(--ink);border-radius:50%}
+.points{position:absolute;left:4%;right:4%;top:22px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.points input{text-align:center;padding:8px 2px;font-size:12px}.points span{text-align:center;font-size:10px;color:var(--muted);display:block;margin-top:4px}
+.timer{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.timer:last-child{border:0}.timer b{font-family:monospace}
+.history{border-left:1px solid var(--line);padding-left:14px;margin-left:5px}.history .item{margin:14px 0}
+.bar{height:7px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:var(--accent)}
+.modal{display:none;position:fixed;inset:0;background:#0005;z-index:20;padding:18px;align-items:flex-end;justify-content:center}.modal.on{display:flex}.sheet{width:min(720px,100%);max-height:90vh;overflow:auto;background:var(--bg);border-radius:24px 24px 14px 14px;padding:18px}
+.close{float:right;border:0;background:var(--soft);border-radius:50%;width:32px;height:32px}
+canvas{width:100%;height:150px;background:white;border:1px solid var(--line);border-radius:12px;touch-action:none}
+.notice{font-size:11px;color:var(--muted);padding:8px 2px 0}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div><div class="brand">LASH RECORDS</div><div class="sub">Studio client management · V0.3</div></div><div class="avatar">JC</div></header>
+<main>
+<section id="home" class="page active">
+<h1>Good afternoon.</h1>
+<div class="card">
+<div class="between row"><div><div class="label">營業額</div><div id="revenue" class="value" style="font-family:Georgia;font-size:34px;margin-top:5px">$86,400</div></div>
+<div class="tabs" style="width:210px"><button onclick="period(this,'month')" class="on">本月</button><button onclick="period(this,'quarter')">本季</button><button onclick="period(this,'year')">年度</button></div></div>
+<div class="tiny" style="margin-top:8px">歷年同月份比較：2025 $78,200 ・ 2024 $71,600</div>
+</div>
+<div class="grid2">
+<div class="card metric"><div class="label">本月客人</div><div class="value">42</div><div class="tiny">新客 12 ・ 回訪 30</div></div>
+<div class="card metric"><div class="label">平均客單</div><div class="value">$2,057</div><div class="tiny">本月</div></div>
+</div>
+<h2>今日預約</h2>
+<div class="card" id="appointments"></div>
+<div class="notice">Demo 的預約資料為示意；正式版可保留夯客作為預約系統，不重複造一套。</div>
+</section>
+
+<section id="customers" class="page">
+<h1>Customers</h1>
+<input class="search" id="search" placeholder="搜尋姓名 / 電話 / 喜好" oninput="renderCustomers()">
+<div id="customerList"></div>
+</section>
+
+<section id="reports" class="page">
+<h1>Reports</h1>
+<div class="card"><div class="label">2026 年 9 月</div><div class="value" style="font-family:Georgia;font-size:34px">$86,400</div><div class="tiny">42 位客人 ・ 平均客單 $2,057</div></div>
+<h2>新客 / 回訪</h2>
+<div class="card"><div class="between row"><span>新客</span><b>12</b></div><div class="bar"><i style="width:29%"></i></div><br><div class="between row"><span>回訪</span><b>30</b></div><div class="bar"><i style="width:71%"></i></div></div>
+<h2>客戶來源</h2>
+<div class="card"><div class="between row"><span>Instagram</span><b>42%</b></div><div class="bar"><i style="width:42%"></i></div><br><div class="between row"><span>朋友介紹</span><b>31%</b></div><div class="bar"><i style="width:31%"></i></div><br><div class="between row"><span>Google / 其他</span><b>27%</b></div><div class="bar"><i style="width:27%"></i></div></div>
+<button class="btn ghost" onclick="exportData()">匯出 Demo CSV</button>
+</section>
+
+<section id="customerDetail" class="page">
+<button class="btn ghost small" onclick="showPage('customers')">← 客戶列表</button>
+<div id="detail"></div>
+</section>
+</main>
+
+<nav>
+<button data-page="home" class="on" onclick="showPage('home',this)"><span class="navicon">⌂</span>首頁</button>
+<button data-page="customers" onclick="showPage('customers',this)"><span class="navicon">⌕</span>客戶</button>
+<button onclick="openAddMenu()"><span class="navicon">＋</span>新增</button>
+<button data-page="reports" onclick="showPage('reports',this)"><span class="navicon">⌁</span>報表</button>
+</nav>
+</div>
+
+
+<div class="modal" id="addMenuModal"><div class="sheet" style="padding-bottom:28px">
+<button class="close" onclick="closeModal('addMenuModal')">×</button>
+<h2 style="font-size:18px">新增</h2>
+<div style="display:grid;gap:10px;margin-top:18px">
+<button class="btn" style="width:100%;text-align:left;padding:16px" onclick="closeModal('addMenuModal');openCustomerForm()">＋ 新增客戶</button>
+<button class="btn ghost" style="width:100%;text-align:left;padding:16px" onclick="closeModal('addMenuModal');openService()">＋ 新增服務紀錄</button>
+</div>
+</div></div>
+
+<div class="modal" id="customerModal"><div class="sheet">
+<button class="close" onclick="closeModal('customerModal')">×</button>
+<h2 id="customerFormTitle" style="font-size:18px">新增客戶</h2>
+<input type="hidden" id="editCustomerId">
+<label>姓名 *</label><input id="cName" placeholder="客戶姓名">
+<label>電話</label><input id="cPhone" type="tel" placeholder="09xx-xxx-xxx">
+<div class="grid2">
+<div><label>生日</label><input id="cBirthday" type="date"></div>
+<div><label>來源</label><select id="cSource" onchange="updateSourceDetail()">
+<option>Instagram</option><option>Google</option><option>親友介紹</option><option>其他</option>
+</select></div>
+</div>
+<div id="sourceDetailWrap" style="display:none">
+<label id="sourceDetailLabel">介紹人</label>
+<input id="cSourceDetail" placeholder="">
+</div>
+<label>個人喜好</label><textarea id="cLikes" placeholder="例如：自然、不要太濃、眼尾不要太長"></textarea>
+<label>注意事項</label><textarea id="cNotes" placeholder="例如：左眼容易流淚、眼頭較敏感"></textarea>
+<button class="btn" style="width:100%;margin-top:16px" onclick="saveCustomer()">儲存客戶資料</button>
+</div></div>
+
+<div class="modal" id="serviceModal"><div class="sheet">
+<button class="close" onclick="closeModal('serviceModal')">×</button><h2 style="font-size:18px">新增服務紀錄</h2>
+<label>客戶</label><select id="svcCustomer"></select>
+<div class="grid2"><div><label>日期</label><input id="svcDate" type="date"></div><div><label>項目</label><select id="svcItem"><option>新接</option><option>補睫</option><option>卸睫重接</option><option>卸睫</option></select></div></div>
+<div class="grid2"><div><label>原價</label><input id="price" type="number" value="2000" oninput="calcPaid()"></div><div><label>折扣</label><input id="discount" type="number" value="0" oninput="calcPaid()"></div></div>
+<label>實收金額</label><input id="paid" type="number" value="2000">
+<div class="between row" style="margin-top:18px"><h2 style="margin:0">睫毛設計</h2><button class="btn ghost small" onclick="copyLast()">複製上次設計</button></div>
+<div class="grid2"><div><label>款式</label><select id="style"><option>自然款</option><option>圓眼</option><option>眼尾拉長</option><option>束感</option><option>自訂</option></select></div><div><label>根數</label><input id="count" type="number" value="120"></div></div>
+<label>毛材型號</label><input id="material" placeholder="例如 YY-01">
+<label>左眼五點定位（mm）</label><div class="eye"><div class="arc"></div><div class="points" id="leftPts"></div></div>
+<label>右眼五點定位（mm）</label><div class="eye"><div class="arc"></div><div class="points" id="rightPts"></div></div>
+<h2>操作時間</h2><div class="card" id="timers"></div>
+<label>備註</label><textarea id="svcNote" placeholder="本次狀況、下次調整…"></textarea>
+<button class="btn" style="width:100%;margin-top:14px" onclick="saveService()">儲存本次服務</button>
+</div></div>
+
+<div class="modal" id="consentModal"><div class="sheet">
+<button class="close" onclick="closeModal('consentModal')">×</button><h2 style="font-size:18px">嫁接睫毛服務同意書 — Demo</h2>
+<p class="tiny" style="line-height:1.7">此處為介面示意。正式使用前，同意書內容應依你的實際服務流程與法律需求確認。</p>
+<label><input type="checkbox" id="agree" style="width:auto"> 我已閱讀並同意以上內容</label>
+<label>客戶簽名</label><canvas id="signature" width="650" height="180"></canvas>
+<div class="row" style="margin-top:10px"><button class="btn ghost" onclick="clearSig()">清除</button><button class="btn" onclick="saveConsent()">儲存簽名</button></div>
+</div></div>
+
+<script>
+const seed=[
+{id:1,name:"林芷婷",phone:"0912-345-678",birthday:"03/18",source:"Instagram",likes:"自然、偏短眼尾，不要太濃",notes:"左眼較容易流淚",visits:8,spent:14600,cycle:25,last:"2026-09-12",services:[{date:"2026-09-12",item:"新接",paid:1800,style:"自然款",count:120,material:"YY-01",left:[8,9,10,11,10],right:[8,9,10,11,10],note:"下次眼尾可短 1mm"}]},
+{id:2,name:"陳以安",phone:"0988-221-305",birthday:"11/02",source:"親友介紹",sourceDetail:"小安",likes:"存在感、眼中偏長",notes:"無",visits:5,spent:9600,cycle:28,last:"2026-09-05",services:[{date:"2026-09-05",item:"補睫",paid:1400,style:"圓眼",count:90,material:"Flat-02",left:[8,9,11,10,9],right:[8,9,11,10,9],note:"持久度佳"}]},
+{id:3,name:"王思妤",phone:"0921-662-817",birthday:"07/26",source:"Instagram",likes:"束感、拍照明顯",notes:"眼頭較敏感",visits:3,spent:6200,cycle:31,last:"2026-08-28",services:[]}
+];
+let customers=JSON.parse(localStorage.getItem("lashDemoCustomers")||"null")||seed;
+let activeCustomer=1;
+const stages=["設計溝通","清潔","五點定位","最後完成"]; let timerState={}; let tick=null;
+function persist(){localStorage.setItem("lashDemoCustomers",JSON.stringify(customers))}
+function showPage(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));if(btn)btn.classList.add("on");if(id==="customers")renderCustomers();window.scrollTo(0,0)}
+function period(btn,p){btn.parentNode.querySelectorAll("button").forEach(x=>x.classList.remove("on"));btn.classList.add("on");document.getElementById("revenue").textContent={month:"$86,400",quarter:"$238,600",year:"$694,200"}[p]}
+function renderAppointments(){document.getElementById("appointments").innerHTML=[["10:00","林芷婷","新接"],["14:00","陳以安","補睫"],["17:30","王思妤","新接"]].map(a=>`<div class="appt row"><div class="time">${a[0]}</div><div style="flex:1"><b>${a[1]}</b><div class="tiny">上次來店紀錄可於客戶頁查看</div></div><span class="pill">${a[2]}</span></div>`).join("")}
+function renderCustomers(){let q=(document.getElementById("search").value||"").toLowerCase();let list=customers.filter(c=>(c.name+c.phone+c.likes).toLowerCase().includes(q));document.getElementById("customerList").innerHTML=list.map(c=>`<div class="card customer" onclick="openCustomer(${c.id})"><div><strong>${c.name}</strong><div class="tiny">${c.phone} ・ ${c.likes}</div><div class="tiny" style="margin-top:6px">最近 ${c.last} ・ ${c.cycle ? "約 "+c.cycle+" 天回訪" : "尚無回訪週期"}</div></div><span>›</span></div>`).join("")}
+function openCustomer(id){activeCustomer=id;let c=customers.find(x=>x.id===id);let services=[...(c.services||[])].reverse().map(s=>`<div class="item"><b>${s.date} ・ ${s.item}</b><div class="tiny">${s.style||""} ${s.count? "・ "+s.count+"根":""} ・ $${Number(s.paid).toLocaleString()}</div><div class="tiny">${s.note||""}</div></div>`).join("")||'<div class="tiny">尚無服務紀錄</div>';
+document.getElementById("detail").innerHTML=`<h1>${c.name}</h1><div class="card"><div class="grid2"><div><div class="label">電話</div>${c.phone}</div><div><div class="label">生日</div>${c.birthday}</div><div><div class="label">來源</div>${c.source}${c.sourceDetail ? "・"+c.sourceDetail : ""}</div><div><div class="label">平均回訪</div>${c.cycle ? c.cycle+" 天" : "—"}</div></div><label>個人喜好</label><div>${c.likes}</div><label>注意事項</label><div>${c.notes}</div></div>
+<div class="grid2"><div class="card metric"><div class="label">累積來店</div><div class="value">${c.visits}</div></div><div class="card metric"><div class="label">累積消費</div><div class="value">$${c.spent.toLocaleString()}</div></div></div>
+<div class="row" style="flex-wrap:wrap"><button class="btn" onclick="openService(${c.id})">＋ 新增服務</button><button class="btn ghost" onclick="openCustomerForm(${c.id})">編輯客戶</button><button class="btn ghost" onclick="openConsent()">同意書 / 簽名</button></div><h2>服務歷史</h2><div class="card history">${services}</div><h2>客戶照片</h2><div class="card tiny">Demo：正式版會讓每次服務上傳設計溝通、定位與完成照，並依日期自動歸檔。</div>`;
+showPage("customerDetail")}
+
+function openAddMenu(){const m=document.getElementById("addMenuModal"); if(m){m.classList.add("on")}else{alert("新增選單載入失敗，請重新整理頁面")}}
+function openCustomerForm(id){
+  document.getElementById("editCustomerId").value=id||"";
+  document.getElementById("customerFormTitle").textContent=id?"編輯客戶":"新增客戶";
+  let c=id?customers.find(x=>x.id===id):null;
+  document.getElementById("cName").value=c?.name||""; document.getElementById("cPhone").value=c?.phone||""; document.getElementById("cBirthday").value=c?.birthday||"";
+  document.getElementById("cSource").value=c?.source||"Instagram"; document.getElementById("cLikes").value=c?.likes||""; document.getElementById("cNotes").value=c?.notes||"";
+  document.getElementById("customerModal").classList.add("on");
+}
+function updateSourceDetail(){
+  const source=document.getElementById("cSource").value;
+  const wrap=document.getElementById("sourceDetailWrap");
+  const label=document.getElementById("sourceDetailLabel");
+  const input=document.getElementById("cSourceDetail");
+  if(source==="親友介紹"){
+    wrap.style.display="block"; label.textContent="介紹人"; input.placeholder="輸入介紹人姓名";
+  }else if(source==="其他"){
+    wrap.style.display="block"; label.textContent="其他來源"; input.placeholder="輸入來源內容";
+  }else{
+    wrap.style.display="none"; input.value="";
+  }
+}
+function saveCustomer(){
+  let name=document.getElementById("cName").value.trim(); if(!name)return alert("請輸入客戶姓名");
+  let id=+document.getElementById("editCustomerId").value;
+  if(id){
+    let c=customers.find(x=>x.id===id);
+    Object.assign(c,{name,phone:document.getElementById("cPhone").value.trim(),birthday:document.getElementById("cBirthday").value.trim(),source:document.getElementById("cSource").value,sourceDetail:document.getElementById("cSourceDetail").value.trim(),likes:document.getElementById("cLikes").value.trim(),notes:document.getElementById("cNotes").value.trim()});
+    persist(); closeModal("customerModal"); renderCustomers(); openCustomer(id);
+  }else{
+    let newId=customers.length?Math.max(...customers.map(x=>x.id))+1:1;
+    let c={id:newId,name,phone:document.getElementById("cPhone").value.trim(),birthday:document.getElementById("cBirthday").value.trim(),source:document.getElementById("cSource").value,sourceDetail:document.getElementById("cSourceDetail").value.trim(),likes:document.getElementById("cLikes").value.trim(),notes:document.getElementById("cNotes").value.trim(),visits:0,spent:0,cycle:0,last:"尚未服務",services:[]};
+    customers.unshift(c); activeCustomer=newId; persist(); closeModal("customerModal"); renderCustomers(); openCustomer(newId);
+  }
+}
+
+function pointInputs(side){let names=["眼頭","前中","中央","後中","眼尾"];return names.map((n,i)=>`<div><input id="${side}${i}" type="number" value="${[8,9,10,11,10][i]}"><span>${n}</span></div>`).join("")}
+function openService(id){if(id)activeCustomer=id;document.getElementById("svcCustomer").innerHTML=customers.map(c=>`<option value="${c.id}" ${c.id===activeCustomer?"selected":""}>${c.name}</option>`).join("");document.getElementById("svcDate").value=new Date().toISOString().slice(0,10);document.getElementById("leftPts").innerHTML=pointInputs("l");document.getElementById("rightPts").innerHTML=pointInputs("r");renderTimers();document.getElementById("serviceModal").classList.add("on")}
+function closeModal(id){document.getElementById(id).classList.remove("on")}
+function calcPaid(){document.getElementById("paid").value=Math.max(0,(+document.getElementById("price").value||0)-(+document.getElementById("discount").value||0))}
+function copyLast(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id),s=c.services?.[c.services.length-1];if(!s)return alert("這位客人尚無上次設計");document.getElementById("style").value=s.style||"自然款";document.getElementById("count").value=s.count||120;document.getElementById("material").value=s.material||"";(s.left||[]).forEach((v,i)=>document.getElementById("l"+i).value=v);(s.right||[]).forEach((v,i)=>document.getElementById("r"+i).value=v);document.getElementById("svcNote").value=s.note||""}
+function renderTimers(){document.getElementById("timers").innerHTML=stages.map((s,i)=>`<div class="timer"><span>${s}</span><div class="row"><b id="t${i}">00:00</b><button class="btn ghost small" onclick="toggleTimer(${i})">開始 / 停止</button></div></div>`).join("")}
+function toggleTimer(i){let now=Date.now();if(timerState.active===i){timerState.elapsed[i]=(timerState.elapsed?.[i]||0)+(now-timerState.start);timerState.active=null}else{if(timerState.active!=null){let a=timerState.active;timerState.elapsed[a]=(timerState.elapsed?.[a]||0)+(now-timerState.start)}timerState.elapsed=timerState.elapsed||{};timerState.active=i;timerState.start=now}if(!tick)tick=setInterval(updateTimers,500);updateTimers()}
+function updateTimers(){stages.forEach((_,i)=>{let ms=(timerState.elapsed?.[i]||0)+(timerState.active===i?Date.now()-timerState.start:0),sec=Math.floor(ms/1000);let m=String(Math.floor(sec/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");let el=document.getElementById("t"+i);if(el)el.textContent=m+":"+s})}
+function saveService(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id);let s={date:document.getElementById("svcDate").value,item:document.getElementById("svcItem").value,price:+document.getElementById("price").value,discount:+document.getElementById("discount").value,paid:+document.getElementById("paid").value,style:document.getElementById("style").value,count:+document.getElementById("count").value,material:document.getElementById("material").value,left:[0,1,2,3,4].map(i=>+document.getElementById("l"+i).value),right:[0,1,2,3,4].map(i=>+document.getElementById("r"+i).value),note:document.getElementById("svcNote").value};c.services=c.services||[];c.services.push(s);c.last=s.date;c.visits++;c.spent+=s.paid;persist();closeModal("serviceModal");openCustomer(id)}
+function openConsent(){document.getElementById("consentModal").classList.add("on");setTimeout(initCanvas,50)}
+let ctx,drawing=false;
+function initCanvas(){let c=document.getElementById("signature");ctx=c.getContext("2d");ctx.lineWidth=2;ctx.lineCap="round";function pos(e){let r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return [(p.clientX-r.left)*c.width/r.width,(p.clientY-r.top)*c.height/r.height]}c.onpointerdown=e=>{drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(...p)};c.onpointermove=e=>{if(!drawing)return;ctx.lineTo(...pos(e));ctx.stroke()};c.onpointerup=()=>drawing=false;c.onpointerleave=()=>drawing=false}
+function clearSig(){let c=document.getElementById("signature");c.getContext("2d").clearRect(0,0,c.width,c.height)}
+function saveConsent(){if(!document.getElementById("agree").checked)return alert("請先勾選同意");alert("Demo：簽名已完成。正式版會與客戶、同意書版本及簽署時間一起儲存。");closeModal("consentModal")}
+function exportData(){let rows=[["姓名","電話","來源","累積來店","累積消費"],...customers.map(c=>[c.name,c.phone,c.source,c.visits,c.spent])];let csv="\ufeff"+rows.map(r=>r.join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="lash-customers-demo.csv";a.click()}
+renderAppointments();renderCustomers();
+</script>
+</body>
+</html>
