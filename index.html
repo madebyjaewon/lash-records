@@ -36,10 +36,153 @@ label{display:block;font-size:12px;color:var(--muted);margin:12px 2px 6px}input,
 canvas{width:100%;height:150px;background:white;border:1px solid var(--line);border-radius:12px;touch-action:none}
 .notice{font-size:11px;color:var(--muted);padding:8px 2px 0}
 </style>
+
+<style>
+/* V0.3.1 — customer form spacing / responsive fix */
+#customerModal .grid2{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:14px;
+  align-items:end;
+}
+#customerModal .grid2 > div{min-width:0;}
+#customerModal input,
+#customerModal select,
+#customerModal textarea{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+#customerModal input[type="date"]{
+  min-width:0;
+  -webkit-appearance:none;
+  appearance:none;
+}
+#customerModal #sourceDetailWrap{margin-top:14px;}
+@media (max-width:600px){
+  #customerModal .grid2{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  #customerModal .sheet{
+    padding-left:20px;
+    padding-right:20px;
+  }
+}
+</style>
+
+<style>.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.formgrid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.formgrid>div{min-width:0}.fieldhint{font-size:10px;color:var(--muted);margin:5px 2px 0}.checkgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.checkitem{margin:0!important;display:flex;align-items:center;gap:9px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)!important}.checkitem input{width:auto!important;margin:0}.eye-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:8px}.eye-card{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:14px;min-width:0}.eye-title{font:600 10px/1 Georgia,serif;letter-spacing:.16em;color:var(--muted)}.eye-visual{height:115px;padding:8px}.eye-visual svg{width:100%;height:100%}.design-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.design-point{text-align:center;min-width:0}.design-point .ptname{font-size:9px;color:var(--muted);height:24px}.design-point input,.design-point select{padding:8px 2px;text-align:center;font-size:11px;border-radius:9px}.design-point .unit{font-size:8px;color:var(--muted);margin:3px}.history-card{border:1px solid var(--line);border-radius:15px;margin:10px 0;background:var(--card);overflow:hidden}.history-summary{padding:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer}.history-detail{display:none;border-top:1px solid var(--line);padding:14px}.history-card.open .history-detail{display:block}.history-design{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.mini-eye{background:var(--soft);border-radius:11px;padding:10px;font-size:11px}.history-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}@media(max-width:600px){.formgrid,.formgrid.three,.eye-layout{grid-template-columns:1fr}.checkgrid{grid-template-columns:1fr 1fr}.history-design{grid-template-columns:1fr}}</style>
+<style>
+/* V0.5 — refined studio CRM design system */
+:root{
+  --ink:#242320;
+  --muted:#817d75;
+  --line:#dedbd4;
+  --soft:#f6f4ef;
+  --card:#fffefa;
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  color:var(--ink);
+  letter-spacing:.005em;
+  font-variant-numeric:lining-nums tabular-nums;
+  font-feature-settings:"lnum" 1,"tnum" 1;
+}
+input,select,textarea,button{
+  font:inherit;
+  font-variant-numeric:lining-nums tabular-nums;
+  font-feature-settings:"lnum" 1,"tnum" 1;
+}
+h1{
+  letter-spacing:-.025em;
+  line-height:1.12;
+  margin-bottom:18px;
+}
+h2{
+  letter-spacing:-.012em;
+  margin-top:26px;
+  margin-bottom:10px;
+}
+.label,label{
+  letter-spacing:.035em;
+}
+.card{
+  border-color:rgba(36,35,32,.10)!important;
+  box-shadow:none!important;
+}
+input,select,textarea{
+  min-height:46px;
+  border-color:rgba(36,35,32,.14)!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  padding:11px 12px!important;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+textarea{min-height:92px}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:rgba(36,35,32,.42)!important;
+  box-shadow:0 0 0 3px rgba(36,35,32,.045);
+}
+.btn{
+  min-height:42px;
+  border-radius:10px!important;
+  box-shadow:none!important;
+  font-weight:600;
+  letter-spacing:.01em;
+}
+.btn.ghost{
+  background:transparent!important;
+  border-color:rgba(36,35,32,.15)!important;
+}
+.metric .value{
+  font-variant-numeric:lining-nums tabular-nums;
+  font-feature-settings:"lnum" 1,"tnum" 1;
+  letter-spacing:-.04em;
+  line-height:1;
+}
+.checkitem{
+  min-height:46px;
+  border-radius:10px!important;
+  border-color:rgba(36,35,32,.12)!important;
+}
+.checkitem:has(input:checked){
+  border-color:rgba(36,35,32,.5)!important;
+  background:var(--soft)!important;
+}
+.eye-card,.history-card{
+  border-color:rgba(36,35,32,.11)!important;
+  border-radius:12px!important;
+}
+.history-summary{padding:15px 16px}
+.history-detail{padding:16px}
+.mini-eye{border-radius:9px!important}
+.sheet{
+  box-shadow:0 -12px 40px rgba(36,35,32,.08)!important;
+}
+.formgrid,.grid2{column-gap:14px!important;row-gap:12px!important}
+#customerModal .grid2{gap:14px!important}
+.tiny{
+  line-height:1.55;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+.design-point input,.design-point select{
+  min-height:40px;
+  padding:7px 2px!important;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+.eye-visual{opacity:.82}
+@media(max-width:600px){
+  h1{margin-bottom:15px}
+  .card{padding:15px!important}
+  .sheet{padding-left:18px!important;padding-right:18px!important}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
-<header><div><div class="brand">LASH RECORDS</div><div class="sub">Studio client management · V0.3</div></div><div class="avatar">JC</div></header>
+<header><div><div class="brand">LASH RECORDS</div><div class="sub">Studio client management · V0.5</div></div><div class="avatar">JC</div></header>
 <main>
 <section id="home" class="page active">
 <h1>Good afternoon.</h1>
@@ -121,15 +264,11 @@ canvas{width:100%;height:150px;background:white;border:1px solid var(--line);bor
 <div class="modal" id="serviceModal"><div class="sheet">
 <button class="close" onclick="closeModal('serviceModal')">×</button><h2 style="font-size:18px">新增服務紀錄</h2>
 <label>客戶</label><select id="svcCustomer"></select>
-<div class="grid2"><div><label>日期</label><input id="svcDate" type="date"></div><div><label>項目</label><select id="svcItem"><option>新接</option><option>補睫</option><option>卸睫重接</option><option>卸睫</option></select></div></div>
-<div class="grid2"><div><label>原價</label><input id="price" type="number" value="2000" oninput="calcPaid()"></div><div><label>折扣</label><input id="discount" type="number" value="0" oninput="calcPaid()"></div></div>
-<label>實收金額</label><input id="paid" type="number" value="2000">
+<label>日期</label><input id="svcDate" type="date"><label>服務項目（可複選）</label><div class="checkgrid"><label class="checkitem"><input type="checkbox" name="svcItems" value="嫁接">嫁接</label><label class="checkitem"><input type="checkbox" name="svcItems" value="純卸除">純卸除</label><label class="checkitem"><input type="checkbox" name="svcItems" value="本店卸除">本店卸除</label><label class="checkitem"><input type="checkbox" name="svcItems" value="他店卸除">他店卸除</label></div>
+<div class="formgrid three"><div><label>原價</label><input id="price" type="number" value="2000" oninput="calcPaid()"></div><div><label>折扣</label><input id="discount" value="10" placeholder="9 = 9折" oninput="calcPaid()"><div class="fieldhint">9 = 9折｜85 = 85折</div></div><div><label>票券</label><input id="voucher" type="number" value="0" oninput="calcPaid()"><div class="fieldhint">折扣後再扣除</div></div></div><label>實收金額</label><input id="paid" type="number" value="2000">
 <div class="between row" style="margin-top:18px"><h2 style="margin:0">睫毛設計</h2><button class="btn ghost small" onclick="copyLast()">複製上次設計</button></div>
-<div class="grid2"><div><label>款式</label><select id="style"><option>自然款</option><option>圓眼</option><option>眼尾拉長</option><option>束感</option><option>自訂</option></select></div><div><label>根數</label><input id="count" type="number" value="120"></div></div>
-<label>毛材型號</label><input id="material" placeholder="例如 YY-01">
-<label>左眼五點定位（mm）</label><div class="eye"><div class="arc"></div><div class="points" id="leftPts"></div></div>
-<label>右眼五點定位（mm）</label><div class="eye"><div class="arc"></div><div class="points" id="rightPts"></div></div>
-<h2>操作時間</h2><div class="card" id="timers"></div>
+<div class="formgrid three"><div><label>款式</label><select id="style"><option>圓眼</option><option>長眼</option></select></div><div><label>根數</label><input id="count" type="number" value="120"></div><div><label>型號</label><input id="material" placeholder="例如 YY-01"></div></div>
+<label>五點定位｜長度 × 翹度</label><div class="eye-layout"><div class="eye-card"><div class="eye-title">LEFT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L54 28 M105 42 L101 8 M150 36 L150 0 M195 42 L199 8 M238 58 L246 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="leftPts"></div></div><div class="eye-card"><div class="eye-title">RIGHT</div><div class="eye-visual"><svg viewBox="0 0 300 120"><path d="M22 75 Q150 10 278 75 Q150 112 22 75" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 58 L54 28 M105 42 L101 8 M150 36 L150 0 M195 42 L199 8 M238 58 L246 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="design-grid" id="rightPts"></div></div></div><h2>操作時間</h2><div class="card" id="timers"></div>
 <label>備註</label><textarea id="svcNote" placeholder="本次狀況、下次調整…"></textarea>
 <button class="btn" style="width:100%;margin-top:14px" onclick="saveService()">儲存本次服務</button>
 </div></div>
@@ -156,12 +295,7 @@ function showPage(id,btn){document.querySelectorAll(".page").forEach(x=>x.classL
 function period(btn,p){btn.parentNode.querySelectorAll("button").forEach(x=>x.classList.remove("on"));btn.classList.add("on");document.getElementById("revenue").textContent={month:"$86,400",quarter:"$238,600",year:"$694,200"}[p]}
 function renderAppointments(){document.getElementById("appointments").innerHTML=[["10:00","林芷婷","新接"],["14:00","陳以安","補睫"],["17:30","王思妤","新接"]].map(a=>`<div class="appt row"><div class="time">${a[0]}</div><div style="flex:1"><b>${a[1]}</b><div class="tiny">上次來店紀錄可於客戶頁查看</div></div><span class="pill">${a[2]}</span></div>`).join("")}
 function renderCustomers(){let q=(document.getElementById("search").value||"").toLowerCase();let list=customers.filter(c=>(c.name+c.phone+c.likes).toLowerCase().includes(q));document.getElementById("customerList").innerHTML=list.map(c=>`<div class="card customer" onclick="openCustomer(${c.id})"><div><strong>${c.name}</strong><div class="tiny">${c.phone} ・ ${c.likes}</div><div class="tiny" style="margin-top:6px">最近 ${c.last} ・ ${c.cycle ? "約 "+c.cycle+" 天回訪" : "尚無回訪週期"}</div></div><span>›</span></div>`).join("")}
-function openCustomer(id){activeCustomer=id;let c=customers.find(x=>x.id===id);let services=[...(c.services||[])].reverse().map(s=>`<div class="item"><b>${s.date} ・ ${s.item}</b><div class="tiny">${s.style||""} ${s.count? "・ "+s.count+"根":""} ・ $${Number(s.paid).toLocaleString()}</div><div class="tiny">${s.note||""}</div></div>`).join("")||'<div class="tiny">尚無服務紀錄</div>';
-document.getElementById("detail").innerHTML=`<h1>${c.name}</h1><div class="card"><div class="grid2"><div><div class="label">電話</div>${c.phone}</div><div><div class="label">生日</div>${c.birthday}</div><div><div class="label">來源</div>${c.source}${c.sourceDetail ? "・"+c.sourceDetail : ""}</div><div><div class="label">平均回訪</div>${c.cycle ? c.cycle+" 天" : "—"}</div></div><label>個人喜好</label><div>${c.likes}</div><label>注意事項</label><div>${c.notes}</div></div>
-<div class="grid2"><div class="card metric"><div class="label">累積來店</div><div class="value">${c.visits}</div></div><div class="card metric"><div class="label">累積消費</div><div class="value">$${c.spent.toLocaleString()}</div></div></div>
-<div class="row" style="flex-wrap:wrap"><button class="btn" onclick="openService(${c.id})">＋ 新增服務</button><button class="btn ghost" onclick="openCustomerForm(${c.id})">編輯客戶</button><button class="btn ghost" onclick="openConsent()">同意書 / 簽名</button></div><h2>服務歷史</h2><div class="card history">${services}</div><h2>客戶照片</h2><div class="card tiny">Demo：正式版會讓每次服務上傳設計溝通、定位與完成照，並依日期自動歸檔。</div>`;
-showPage("customerDetail")}
-
+function openCustomer(id){activeCustomer=id;let c=customers.find(x=>x.id===id),ordered=[...(c.services||[])].sort((a,b)=>a.date.localeCompare(b.date));let services=[...ordered].reverse().map((x)=>{let oi=ordered.indexOf(x),prev=oi>0?ordered[oi-1]:null,gap=prev?Math.round((new Date(x.date)-new Date(prev.date))/86400000):"",items=(x.items&&x.items.length?x.items:[x.item||"嫁接"]).join("＋"),fmt=p=>(p||[]).map(v=>typeof v==="object"?`${v.len}mm ${v.curl}`:`${v}mm`).join(" · ");return `<div class="history-card"><div class="history-summary" onclick="this.parentNode.classList.toggle('open')"><div><b>${x.date}　${items}</b><div class="tiny">${x.style||""}${x.count?"｜"+x.count+" 根":""}${x.material?"｜"+x.material:""}${gap?"｜距上次 "+gap+" 天":""}</div></div><div style="text-align:right"><b>$${Number(x.paid||0).toLocaleString()}</b><div class="tiny">查看 ›</div></div></div><div class="history-detail"><div class="grid2"><div><div class="label">原價</div>$${Number(x.price||x.paid||0).toLocaleString()}</div><div><div class="label">折扣</div>${x.discount||10}折</div><div><div class="label">票券</div>$${Number(x.voucher||0).toLocaleString()}</div><div><div class="label">實收</div><b>$${Number(x.paid||0).toLocaleString()}</b></div></div><h2>睫毛設計</h2><div class="tiny">${x.style||"—"}｜${x.count||"—"} 根｜型號 ${x.material||"—"}</div><div class="history-design"><div class="mini-eye"><b>LEFT</b><br>${fmt(x.left)}</div><div class="mini-eye"><b>RIGHT</b><br>${fmt(x.right)}</div></div><h2>操作時間</h2><div class="tiny">${(x.times||[]).join("　")||"—"}</div><label>備註</label><div>${x.note||"—"}</div><label>照片</label><div class="tiny">正式版：術前／定位／完成照</div><div class="history-actions"><button class="btn small" onclick="openService(${c.id});setTimeout(()=>applyDesign(customers.find(z=>z.id===${c.id}).services[${oi}]),0)">複製此筆設計</button><button class="btn ghost small" onclick="alert('編輯紀錄將於正式資料版開放')">編輯紀錄</button></div></div></div>`}).join("")||'<div class="tiny">尚無服務紀錄</div>';document.getElementById("detail").innerHTML=`<h1>${c.name}</h1><div class="card"><div class="grid2"><div><div class="label">電話</div>${c.phone}</div><div><div class="label">生日</div>${c.birthday}</div><div><div class="label">來源</div>${c.source}${c.sourceDetail ? "・"+c.sourceDetail : ""}</div><div><div class="label">平均回訪</div>${c.cycle ? c.cycle+" 天" : "—"}</div></div><label>個人喜好</label><div>${c.likes}</div><label>注意事項</label><div>${c.notes}</div></div><div class="grid2"><div class="card metric"><div class="label">累積來店</div><div class="value">${c.visits}</div></div><div class="card metric"><div class="label">累積消費</div><div class="value">$${c.spent.toLocaleString()}</div></div></div><div class="row" style="flex-wrap:wrap"><button class="btn" onclick="openService(${c.id})">＋ 新增服務</button><button class="btn ghost" onclick="openCustomerForm(${c.id})">編輯客戶</button><button class="btn ghost" onclick="openConsent()">同意書 / 簽名</button></div><h2>服務歷史</h2>${services}<h2>客戶照片</h2><div class="card tiny">正式版會讓每次服務照片依日期自動歸檔。</div>`;showPage("customerDetail")}
 function openAddMenu(){const m=document.getElementById("addMenuModal"); if(m){m.classList.add("on")}else{alert("新增選單載入失敗，請重新整理頁面")}}
 function openCustomerForm(id){
   document.getElementById("editCustomerId").value=id||"";
@@ -198,15 +332,17 @@ function saveCustomer(){
   }
 }
 
-function pointInputs(side){let names=["眼頭","前中","中央","後中","眼尾"];return names.map((n,i)=>`<div><input id="${side}${i}" type="number" value="${[8,9,10,11,10][i]}"><span>${n}</span></div>`).join("")}
-function openService(id){if(id)activeCustomer=id;document.getElementById("svcCustomer").innerHTML=customers.map(c=>`<option value="${c.id}" ${c.id===activeCustomer?"selected":""}>${c.name}</option>`).join("");document.getElementById("svcDate").value=new Date().toISOString().slice(0,10);document.getElementById("leftPts").innerHTML=pointInputs("l");document.getElementById("rightPts").innerHTML=pointInputs("r");renderTimers();document.getElementById("serviceModal").classList.add("on")}
+function pointInputs(side,values){let names=["眼頭","前中","中央","後中","眼尾"],curls=["J","B","C","CC","D","L","L+"];return names.map((n,i)=>{let v=values?.[i],len=typeof v==="object"?v.len:(v||[8,9,10,11,10][i]),curl=typeof v==="object"?v.curl:"C";return `<div class="design-point"><div class="ptname">${n}</div><input id="${side}len${i}" type="number" value="${len}"><div class="unit">mm</div><select id="${side}curl${i}">${curls.map(x=>`<option ${x===curl?"selected":""}>${x}</option>`).join("")}</select></div>`}).join("")}
+function openService(id){if(id)activeCustomer=id;document.getElementById("svcCustomer").innerHTML=customers.map(c=>`<option value="${c.id}" ${c.id===activeCustomer?"selected":""}>${c.name}</option>`).join("");document.getElementById("svcDate").value=new Date().toISOString().slice(0,10);document.querySelectorAll('input[name="svcItems"]').forEach(x=>x.checked=false);document.getElementById("leftPts").innerHTML=pointInputs("l");document.getElementById("rightPts").innerHTML=pointInputs("r");timerState={};renderTimers();calcPaid();document.getElementById("serviceModal").classList.add("on")}
 function closeModal(id){document.getElementById(id).classList.remove("on")}
-function calcPaid(){document.getElementById("paid").value=Math.max(0,(+document.getElementById("price").value||0)-(+document.getElementById("discount").value||0))}
-function copyLast(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id),s=c.services?.[c.services.length-1];if(!s)return alert("這位客人尚無上次設計");document.getElementById("style").value=s.style||"自然款";document.getElementById("count").value=s.count||120;document.getElementById("material").value=s.material||"";(s.left||[]).forEach((v,i)=>document.getElementById("l"+i).value=v);(s.right||[]).forEach((v,i)=>document.getElementById("r"+i).value=v);document.getElementById("svcNote").value=s.note||""}
+function discountMultiplier(raw){let n=parseFloat(raw);if(!isFinite(n)||n<=0)return 1;if(n<=10)return n/10;if(n<=100)return n/100;return 1}
+function calcPaid(){let p=+document.getElementById("price").value||0,d=discountMultiplier(document.getElementById("discount").value),v=+document.getElementById("voucher").value||0;document.getElementById("paid").value=Math.max(0,Math.round(p*d-v))}
+function applyDesign(s){document.getElementById("style").value=s.style==="長眼"?"長眼":"圓眼";document.getElementById("count").value=s.count||120;document.getElementById("material").value=s.material||"";document.getElementById("leftPts").innerHTML=pointInputs("l",s.left);document.getElementById("rightPts").innerHTML=pointInputs("r",s.right);document.getElementById("svcNote").value=s.note||""}
+function copyLast(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id),s=c.services?.[c.services.length-1];if(!s)return alert("這位客人尚無上次設計");applyDesign(s)}
 function renderTimers(){document.getElementById("timers").innerHTML=stages.map((s,i)=>`<div class="timer"><span>${s}</span><div class="row"><b id="t${i}">00:00</b><button class="btn ghost small" onclick="toggleTimer(${i})">開始 / 停止</button></div></div>`).join("")}
 function toggleTimer(i){let now=Date.now();if(timerState.active===i){timerState.elapsed[i]=(timerState.elapsed?.[i]||0)+(now-timerState.start);timerState.active=null}else{if(timerState.active!=null){let a=timerState.active;timerState.elapsed[a]=(timerState.elapsed?.[a]||0)+(now-timerState.start)}timerState.elapsed=timerState.elapsed||{};timerState.active=i;timerState.start=now}if(!tick)tick=setInterval(updateTimers,500);updateTimers()}
 function updateTimers(){stages.forEach((_,i)=>{let ms=(timerState.elapsed?.[i]||0)+(timerState.active===i?Date.now()-timerState.start:0),sec=Math.floor(ms/1000);let m=String(Math.floor(sec/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");let el=document.getElementById("t"+i);if(el)el.textContent=m+":"+s})}
-function saveService(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id);let s={date:document.getElementById("svcDate").value,item:document.getElementById("svcItem").value,price:+document.getElementById("price").value,discount:+document.getElementById("discount").value,paid:+document.getElementById("paid").value,style:document.getElementById("style").value,count:+document.getElementById("count").value,material:document.getElementById("material").value,left:[0,1,2,3,4].map(i=>+document.getElementById("l"+i).value),right:[0,1,2,3,4].map(i=>+document.getElementById("r"+i).value),note:document.getElementById("svcNote").value};c.services=c.services||[];c.services.push(s);c.last=s.date;c.visits++;c.spent+=s.paid;persist();closeModal("serviceModal");openCustomer(id)}
+function saveService(){let id=+document.getElementById("svcCustomer").value,c=customers.find(x=>x.id===id),items=[...document.querySelectorAll('input[name="svcItems"]:checked')].map(x=>x.value);if(!items.length)return alert("請至少選擇一個服務項目");let pts=side=>[0,1,2,3,4].map(i=>({len:+document.getElementById(side+"len"+i).value,curl:document.getElementById(side+"curl"+i).value}));let s={date:document.getElementById("svcDate").value,items,price:+document.getElementById("price").value,discount:document.getElementById("discount").value,voucher:+document.getElementById("voucher").value,paid:+document.getElementById("paid").value,style:document.getElementById("style").value,count:+document.getElementById("count").value,material:document.getElementById("material").value,left:pts("l"),right:pts("r"),times:stages.map((_,i)=>document.getElementById("t"+i)?.textContent||"00:00"),note:document.getElementById("svcNote").value};c.services=c.services||[];c.services.push(s);c.last=s.date;c.visits++;c.spent+=s.paid;persist();closeModal("serviceModal");openCustomer(id)}
 function openConsent(){document.getElementById("consentModal").classList.add("on");setTimeout(initCanvas,50)}
 let ctx,drawing=false;
 function initCanvas(){let c=document.getElementById("signature");ctx=c.getContext("2d");ctx.lineWidth=2;ctx.lineCap="round";function pos(e){let r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return [(p.clientX-r.left)*c.width/r.width,(p.clientY-r.top)*c.height/r.height]}c.onpointerdown=e=>{drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(...p)};c.onpointermove=e=>{if(!drawing)return;ctx.lineTo(...pos(e));ctx.stroke()};c.onpointerup=()=>drawing=false;c.onpointerleave=()=>drawing=false}
